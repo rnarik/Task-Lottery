@@ -1,5 +1,6 @@
 // Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // 設定
@@ -11,14 +12,48 @@ const firebaseConfig = {
 
 // 初期化
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-// データ送信テスト
-async function sendData() {
-  await addDoc(collection(db, "test"), {
-    message: "Hello Firebase!"
-  });
-  console.log("送信成功");
-}
+// Googleプロバイダ
+const provider = new GoogleAuthProvider();
 
-sendData();
+// 要素取得
+const loginBtn = document.getElementById("loginBtn");
+const detailBtn = document.getElementById("detailBtn");
+
+let currentUser = null;
+
+// ログイン状態監視
+onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    console.log("ログイン状態:", user);
+});
+
+// ログイン処理
+loginBtn.addEventListener("click", async () => {
+    try {
+        await signInWithPopup(auth, provider);
+        alert("ログイン成功");
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+// ボタンクリック → Firestore書き込み
+detailBtn.addEventListener("click", async () => {
+    if (!currentUser) {
+        alert("ログインしてください");
+        return;
+    }
+
+    try {
+        await addDoc(collection(db, "clickLogs"), {
+            uid: currentUser.uid,
+            clickedAt: serverTimestamp()
+        });
+        alert("記録しました");
+    } catch (e) {
+        console.error(e);
+    }
+});
