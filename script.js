@@ -50,7 +50,7 @@ detailBtn.addEventListener("click", async () => {
 
     try {
         num += 1;
-        await addDoc(collection(db, "clickLogs"), {
+        await addDoc(collection(db, "text"), {
             uid: currentUser.uid,
             clickedAt: serverTimestamp(),
             num: num
