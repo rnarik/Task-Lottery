@@ -1,6 +1,6 @@
 // Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // 設定
@@ -22,6 +22,7 @@ const provider = new GoogleAuthProvider();
 // 要素取得
 const loginBtn = document.getElementById("loginBtn");
 const detailBtn = document.getElementById("detailBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
 let currentUser = null;
 
@@ -56,6 +57,16 @@ detailBtn.addEventListener("click", async () => {
             num: num
         });
         alert("記録しました");
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+// ログアウト処理
+logoutBtn.addEventListener("click", async () => {
+    try {
+        await signOut(auth);
+        alert("ログアウトしました");
     } catch (e) {
         console.error(e);
     }
