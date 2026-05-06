@@ -14,6 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+let num = 0;
 
 // Googleプロバイダ
 const provider = new GoogleAuthProvider();
@@ -52,7 +53,8 @@ detailBtn.addEventListener("click", async () => {
             uid: currentUser.uid,
             clickedAt: serverTimestamp()
         });
-        alert("記録しました");
+        num += 1;
+        alert("記録しました" + num);
     } catch (e) {
         console.error(e);
     }
