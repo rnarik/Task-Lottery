@@ -49,12 +49,13 @@ detailBtn.addEventListener("click", async () => {
     }
 
     try {
+        num += 1;
         await addDoc(collection(db, "clickLogs"), {
             uid: currentUser.uid,
-            clickedAt: serverTimestamp()
+            clickedAt: serverTimestamp(),
+            num: num
         });
-        num += 1;
-        alert("記録しました" + num);
+        alert("記録しました");
     } catch (e) {
         console.error(e);
     }
