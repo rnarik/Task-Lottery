@@ -1,7 +1,7 @@
 // Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // 設定
 const firebaseConfig = {
@@ -51,7 +51,7 @@ detailBtn.addEventListener("click", async () => {
 
     try {
         num += 1;
-        await addDoc(collection(db, "text"), {
+        await setDoc(doc(db, "text", "main"), {
             uid: currentUser.uid,
             clickedAt: serverTimestamp(),
             num: num
